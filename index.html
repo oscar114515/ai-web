@@ -13,22 +13,15 @@
 html, body { height: 100%; overflow: hidden; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang HK', 'Microsoft JhengHei', sans-serif;
-  background: #f0f2f5;
-  display: flex;
-  flex-direction: column;
+  background: #f0f2f5; display: flex; flex-direction: column;
 }
 .navbar {
   width: 100%; height: 64px; background: #f8f9fa; padding: 0 2rem;
   display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid #ddd; flex-shrink: 0;
-  transform: translateY(-100%);
-  animation: slideDown 0.5s ease-out forwards;
-  z-index: 1000;
+  transform: translateY(-100%); animation: slideDown 0.5s ease-out forwards; z-index: 1000;
 }
-@keyframes slideDown {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(0); }
-}
+@keyframes slideDown { 0% { transform: translateY(-100%); } 100% { transform: translateY(0); } }
 .logo a { display: flex; align-items: center; }
 .logo img { height: 45px; width: auto; display: block; }
 .nav-right { display: flex; align-items: center; gap: 1.2rem; }
@@ -36,40 +29,35 @@ body {
 .nav-links a { text-decoration: none; color: #007bff; font-size: 1rem; cursor: pointer; }
 .nav-links a:hover { color: #0056b3; text-decoration: underline; }
 .avatar-btn {
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 2px solid #e0e0e0; cursor: pointer; background: white;
-  padding: 0; overflow: hidden; transition: border-color 0.2s; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e0e0e0;
+  cursor: pointer; background: white; padding: 0; overflow: hidden;
+  transition: border-color 0.2s; flex-shrink: 0;
 }
 .avatar-btn:hover { border-color: #007bff; }
 .avatar-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .avatar-btn .default-avatar {
-  width: 100%; height: 100%; display: flex; align-items: center;
-  justify-content: center; background: #e6edf8; color: #2c4a7a;
-  font-weight: 600; font-size: 1.1rem;
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  background: #e6edf8; color: #2c4a7a; font-weight: 600; font-size: 1.1rem;
 }
 .auth-link {
-  text-decoration: none; color: #007bff; font-size: 1rem;
-  cursor: pointer; padding: 6px 16px; border-radius: 40px;
-  border: 1px solid #007bff; transition: all 0.2s ease; background: transparent;
+  text-decoration: none; color: #007bff; font-size: 1rem; cursor: pointer;
+  padding: 6px 16px; border-radius: 40px; border: 1px solid #007bff;
+  transition: all 0.2s ease; background: transparent;
 }
 .auth-link:hover { background: #007bff; color: white; text-decoration: none; }
 .auth-link.logout { border-color: #dc3545; color: #dc3545; }
 .auth-link.logout:hover { background: #dc3545; color: white; }
 .auth-link.publish { border-color: #28a745; color: #28a745; }
 .auth-link.publish:hover { background: #28a745; color: white; }
-.main-container {
-  flex: 1; display: flex; overflow: hidden;
-  height: calc(100vh - 64px); background: #ffffff;
-}
+.main-container { flex: 1; display: flex; overflow: hidden; height: calc(100vh - 64px); background: #ffffff; }
 .left-panel {
-  width: 34%; min-width: 320px; max-width: 520px;
-  background: #ffffff; border-right: 1px solid #e5e7eb;
-  display: flex; flex-direction: column; height: 100%; overflow: hidden;
+  width: 34%; min-width: 320px; max-width: 520px; background: #ffffff;
+  border-right: 1px solid #e5e7eb; display: flex; flex-direction: column;
+  height: 100%; overflow: hidden; position: relative;
 }
 .chat-header {
-  padding: 12px 16px; border-bottom: 1px solid #e5e7eb;
-  display: flex; align-items: center; gap: 10px;
-  background: #fafafa; flex-shrink: 0;
+  padding: 12px 16px; border-bottom: 1px solid #e5e7eb; display: flex;
+  align-items: center; gap: 10px; background: #fafafa; flex-shrink: 0;
 }
 .chat-header .logo-icon {
   width: 30px; height: 30px; border-radius: 50%;
@@ -82,10 +70,15 @@ body {
   background: #eef2f6; color: #5a6a7e; padding: 2px 10px;
   border-radius: 20px; font-size: 11px; margin-left: auto;
 }
+.chat-header .history-btn {
+  background: transparent; border: 1px solid #e5e7eb; border-radius: 8px;
+  width: 30px; height: 30px; cursor: pointer; color: #6b7280; font-size: 13px;
+  display: flex; align-items: center; justify-content: center; margin-left: 6px;
+}
+.chat-header .history-btn:hover { background: #f0f0f0; color: #1e5ef7; }
 .chat-messages {
-  flex: 1; overflow-y: auto; padding: 16px;
-  display: flex; flex-direction: column; gap: 12px;
-  background: #fafafa; min-height: 0;
+  flex: 1; overflow-y: auto; padding: 16px; display: flex;
+  flex-direction: column; gap: 12px; background: #fafafa; min-height: 0;
 }
 .msg-row { display: flex; gap: 8px; max-width: 94%; }
 .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
@@ -97,30 +90,18 @@ body {
   color: white; font-size: 13px;
 }
 .msg-bubble {
-  padding: 9px 13px; border-radius: 12px; font-size: 14px;
-  line-height: 1.6; word-break: break-word; white-space: pre-wrap; min-width: 0;
+  padding: 9px 13px; border-radius: 12px; font-size: 14px; line-height: 1.6;
+  word-break: break-word; white-space: pre-wrap; min-width: 0;
 }
-.msg-row.user .msg-bubble {
-  background: #1e5ef7; color: white; border-bottom-right-radius: 4px;
-}
-.msg-row.ai .msg-bubble {
-  background: #ffffff; color: #1a1a2e;
-  border: 1px solid #e5e7eb; border-bottom-left-radius: 4px;
-}
+.msg-row.user .msg-bubble { background: #1e5ef7; color: white; border-bottom-right-radius: 4px; }
+.msg-row.ai .msg-bubble { background: #ffffff; color: #1a1a2e; border: 1px solid #e5e7eb; border-bottom-left-radius: 4px; }
 .msg-bubble.streaming { border-left: 3px solid #1e5ef7; animation: blink 1s infinite; }
-@keyframes blink {
-  0%, 100% { border-left-color: #1e5ef7; }
-  50% { border-left-color: transparent; }
-}
+@keyframes blink { 0%, 100% { border-left-color: #1e5ef7; } 50% { border-left-color: transparent; } }
 .msg-bubble.code-done { background: #ecfdf3; border-color: #b8e0c4; color: #0f7b3a; }
-.chat-input-area {
-  padding: 12px 16px; border-top: 1px solid #e5e7eb;
-  background: #ffffff; flex-shrink: 0;
-}
+.chat-input-area { padding: 12px 16px; border-top: 1px solid #e5e7eb; background: #ffffff; flex-shrink: 0; }
 .chat-input-inner {
-  display: flex; gap: 8px; align-items: flex-end;
-  background: #fafcff; border: 1px solid #e5e7eb;
-  border-radius: 14px; padding: 8px 8px 8px 14px;
+  display: flex; gap: 8px; align-items: flex-end; background: #fafcff;
+  border: 1px solid #e5e7eb; border-radius: 14px; padding: 8px 8px 8px 14px;
 }
 .chat-input-inner:focus-within { border-color: #1e5ef7; }
 #chatInput {
@@ -130,19 +111,61 @@ body {
 }
 .btn-send {
   background: #1e5ef7; color: white; border: none; border-radius: 10px;
-  padding: 8px 18px; font-size: 14px; font-weight: 600;
-  cursor: pointer; white-space: nowrap;
+  padding: 8px 18px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap;
 }
 .btn-send:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-stop {
   background: #dc2626; color: white; border: none; border-radius: 10px;
-  padding: 8px 18px; font-size: 14px; font-weight: 600;
-  cursor: pointer; display: none;
+  padding: 8px 18px; font-size: 14px; font-weight: 600; cursor: pointer; display: none;
 }
-.right-panel {
-  flex: 1; display: flex; flex-direction: column;
-  background: #f5f5f5; height: 100%; overflow: hidden;
+.history-drawer {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: #ffffff; z-index: 10; display: none; flex-direction: column;
+  border-right: 1px solid #e5e7eb;
 }
+.history-drawer.show { display: flex; }
+.history-drawer-header {
+  padding: 14px 16px; border-bottom: 1px solid #e5e7eb;
+  display: flex; justify-content: space-between; align-items: center;
+  background: #fafafa; flex-shrink: 0;
+}
+.history-drawer-header .title { font-weight: 600; font-size: 14px; color: #111; }
+.history-drawer-header .close-btn {
+  background: transparent; border: none; width: 30px; height: 30px;
+  border-radius: 8px; cursor: pointer; color: #6b7280; font-size: 15px;
+}
+.history-drawer-header .close-btn:hover { background: #f0f0f0; }
+.history-new-btn {
+  margin: 12px 16px 6px; padding: 10px 14px; background: #1e5ef7;
+  color: white; border: none; border-radius: 12px; cursor: pointer;
+  font-size: 14px; font-weight: 600; display: flex;
+  align-items: center; justify-content: center; gap: 8px;
+}
+.history-new-btn:hover { background: #3b7cff; }
+.history-list { flex: 1; overflow-y: auto; padding: 8px 12px 16px; }
+.history-item {
+  padding: 10px 12px; border-radius: 10px; cursor: pointer;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 10px;
+  transition: background 0.15s;
+}
+.history-item:hover { background: #f5f7fa; }
+.history-item.active { background: #eef4ff; }
+.history-item .h-icon { font-size: 15px; flex-shrink: 0; }
+.history-item .h-body { flex: 1; min-width: 0; }
+.history-item .h-title {
+  font-size: 13px; color: #1a1a2e; font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.history-item .h-time { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+.history-item .h-del {
+  background: transparent; border: none; color: #d1d5db;
+  width: 26px; height: 26px; border-radius: 6px; cursor: pointer;
+  font-size: 12px; opacity: 0; transition: all 0.15s; flex-shrink: 0;
+}
+.history-item:hover .h-del { opacity: 1; }
+.history-item .h-del:hover { background: #fee2e2; color: #dc2626; }
+.history-empty { text-align: center; color: #9ca3af; font-size: 13px; padding: 40px 20px; }
+.right-panel { flex: 1; display: flex; flex-direction: column; background: #f5f5f5; height: 100%; overflow: hidden; }
 .preview-header {
   padding: 10px 16px; background: #ffffff; border-bottom: 1px solid #e5e7eb;
   display: flex; align-items: center; gap: 10px; flex-shrink: 0;
@@ -150,18 +173,17 @@ body {
 .preview-dots { display: flex; gap: 6px; }
 .preview-dots .dot { width: 11px; height: 11px; border-radius: 50%; }
 .preview-urlbar {
-  flex: 1; background: #f5f5f5; border: 1px solid #e5e7eb;
-  border-radius: 8px; padding: 5px 12px; font-size: 12px;
-  color: #8a98aa; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  flex: 1; background: #f5f5f5; border: 1px solid #e5e7eb; border-radius: 8px;
+  padding: 5px 12px; font-size: 12px; color: #8a98aa;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .preview-content { flex: 1; position: relative; overflow: hidden; }
 #previewFrame { width: 100%; height: 100%; border: none; display: block; background: #ffffff; }
 .empty-state {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; color: #a3a3a3; font-size: 15px;
-  gap: 8px; text-align: center; padding: 20px;
-  background: #f5f5f5; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #a3a3a3; font-size: 15px; gap: 8px; text-align: center;
+  padding: 20px; background: #f5f5f5; pointer-events: none;
 }
 .empty-state .big { font-size: 48px; }
 @media (max-width: 768px) {
@@ -185,86 +207,56 @@ body {
 .modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
-  display: none; justify-content: center; align-items: center;
-  z-index: 5000; cursor: pointer;
+  display: none; justify-content: center; align-items: center; z-index: 5000; cursor: pointer;
 }
 .modal-box {
-  background: white; border-radius: 24px; padding: 2rem;
-  width: 100%; max-width: 400px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: white; border-radius: 24px; padding: 2rem; width: 100%;
+  max-width: 400px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.3s ease; cursor: default;
 }
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 .modal-box .brand { text-align: center; margin-bottom: 1.5rem; }
 .modal-box .brand h2 { font-weight: 500; font-size: 1.8rem; color: #111; }
-.modal-box .tab-switch {
-  display: flex; background: #f5f5f5; border-radius: 3rem;
-  padding: 0.3rem; margin-bottom: 1.5rem; gap: 0.25rem;
-}
+.modal-box .tab-switch { display: flex; background: #f5f5f5; border-radius: 3rem; padding: 0.3rem; margin-bottom: 1.5rem; gap: 0.25rem; }
 .modal-box .tab-btn {
   flex: 1; text-align: center; padding: 0.6rem; font-size: 0.9rem;
   font-weight: 500; border-radius: 2.5rem; background: transparent;
   border: none; color: #5c5c5c; cursor: pointer;
 }
-.modal-box .tab-btn.active {
-  background: #ffffff; color: #0a0a0a; font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
+.modal-box .tab-btn.active { background: #ffffff; color: #0a0a0a; font-weight: 600; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04); }
 .modal-box .form-panel { display: block; }
 .modal-box .form-panel.hidden { display: none; }
 .modal-box .input-group { margin-bottom: 1rem; }
-.modal-box .input-field {
-  width: 100%; padding: 0.8rem 1rem; border: 1px solid #e5e7eb;
-  border-radius: 1rem; font-size: 0.95rem; outline: none;
-}
+.modal-box .input-field { width: 100%; padding: 0.8rem 1rem; border: 1px solid #e5e7eb; border-radius: 1rem; font-size: 0.95rem; outline: none; }
 .modal-box .input-field:focus { border-color: #b0b0b0; }
-.modal-box .action-btn {
-  width: 100%; background: #1a1a1a; color: white; border: none;
-  padding: 0.8rem; border-radius: 1rem; font-weight: 500;
-  font-size: 1rem; cursor: pointer;
-}
+.modal-box .action-btn { width: 100%; background: #1a1a1a; color: white; border: none; padding: 0.8rem; border-radius: 1rem; font-weight: 500; font-size: 1rem; cursor: pointer; }
 .modal-box .action-btn:disabled { background: #999; cursor: not-allowed; }
 .modal-box .action-btn.danger { background: #dc3545; }
 .modal-box .action-btn.danger:hover { background: #c82333; }
 .modal-box .google-btn {
   width: 100%; display: flex; align-items: center; justify-content: center;
-  gap: 0.7rem; background: #fff; border: 1px solid #e5e7eb;
-  padding: 0.8rem; border-radius: 1rem; font-weight: 500;
-  color: #2d2d2d; font-size: 0.95rem; cursor: pointer; transition: background 0.2s;
+  gap: 0.7rem; background: #fff; border: 1px solid #e5e7eb; padding: 0.8rem;
+  border-radius: 1rem; font-weight: 500; color: #2d2d2d; font-size: 0.95rem;
+  cursor: pointer; transition: background 0.2s;
 }
 .modal-box .google-btn:hover { background: #f5f5f5; }
 .modal-box .google-btn svg { flex-shrink: 0; }
-.modal-box .divider {
-  display: flex; align-items: center; margin: 1.2rem 0;
-  color: #9ca3af; font-size: 0.8rem;
-}
-.modal-box .divider::before, .modal-box .divider::after {
-  content: ""; flex: 1; height: 1px; background: #eee;
-}
+.modal-box .divider { display: flex; align-items: center; margin: 1.2rem 0; color: #9ca3af; font-size: 0.8rem; }
+.modal-box .divider::before, .modal-box .divider::after { content: ""; flex: 1; height: 1px; background: #eee; }
 .modal-box .divider span { margin: 0 1rem; }
-.modal-box .message-box {
-  text-align: center; font-size: 0.85rem; padding: 0.5rem;
-  border-radius: 2rem; margin-bottom: 1rem; display: none;
-}
-.modal-box .message-success {
-  color: #065f46; background: #f0fdf6; border: 1px solid #d1fae5; display: block;
-}
-.modal-box .message-error {
-  color: #991b1b; background: #fef2f2; border: 1px solid #fee2e2; display: block;
-}
+.modal-box .message-box { text-align: center; font-size: 0.85rem; padding: 0.5rem; border-radius: 2rem; margin-bottom: 1rem; display: none; }
+.modal-box .message-success { color: #065f46; background: #f0fdf6; border: 1px solid #d1fae5; display: block; }
+.modal-box .message-error { color: #991b1b; background: #fef2f2; border: 1px solid #fee2e2; display: block; }
 .modal-box .spinner {
-  display: inline-block; width: 16px; height: 16px;
-  border: 2px solid #ccc; border-top: 2px solid #1a1a1a;
-  border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 6px;
+  display: inline-block; width: 16px; height: 16px; border: 2px solid #ccc;
+  border-top: 2px solid #1a1a1a; border-radius: 50%;
+  animation: spin 0.6s linear infinite; margin-right: 6px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .modal-box .admin-btn-small {
   margin-top: 0.8rem; background: transparent; border: 1px solid #e5e7eb;
-  padding: 0.5rem; border-radius: 1rem; width: 100%;
-  color: #6b7280; cursor: pointer; font-size: 0.85rem; display: none;
+  padding: 0.5rem; border-radius: 1rem; width: 100%; color: #6b7280;
+  cursor: pointer; font-size: 0.85rem; display: none;
 }
 .modal-box .admin-btn-small:hover { background: #f5f5f5; }
 .admin-modal-overlay {
@@ -274,8 +266,8 @@ body {
 }
 .admin-modal-overlay.show { display: flex; }
 .admin-modal-box {
-  background: #ffffff; border-radius: 1.5rem; padding: 1.5rem;
-  width: 90%; max-width: 550px; max-height: 80vh; overflow-y: auto;
+  background: #ffffff; border-radius: 1.5rem; padding: 1.5rem; width: 90%;
+  max-width: 550px; max-height: 80vh; overflow-y: auto;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 .admin-modal-box h3 { font-weight: 600; font-size: 1.1rem; margin-bottom: 1rem; color: #111; }
@@ -285,9 +277,7 @@ body {
 }
 .admin-modal-box .modal-close:hover { background: #e5e7eb; }
 .admin-modal-box table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-.admin-modal-box th, .admin-modal-box td {
-  padding: 0.7rem 0.5rem; text-align: left; border-bottom: 1px solid #f0f0f0;
-}
+.admin-modal-box th, .admin-modal-box td { padding: 0.7rem 0.5rem; text-align: left; border-bottom: 1px solid #f0f0f0; }
 .admin-modal-box th { color: #6b7280; font-weight: 500; font-size: 0.75rem; }
 .admin-modal-box .delete-user-btn {
   background: #fef2f2; border: 1px solid #fecaca; color: #dc2626;
@@ -295,43 +285,56 @@ body {
   font-size: 0.7rem; font-weight: 500;
 }
 .admin-modal-box .delete-user-btn:hover { background: #fee2e2; }
+.my-sites-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.site-card {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+  background: #fafbfc; border: 1px solid #e5e7eb; border-radius: 12px;
+}
+.site-card .s-icon { font-size: 18px; flex-shrink: 0; }
+.site-card .s-body { flex: 1; min-width: 0; }
+.site-card .s-title {
+  font-size: 13px; font-weight: 600; color: #1a1a2e;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.site-card .s-url { font-size: 11px; color: #6b7280; word-break: break-all; margin-top: 3px; }
+.site-card .s-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.site-card .s-btn {
+  padding: 6px 12px; border-radius: 8px; font-size: 12px;
+  cursor: pointer; border: 1px solid #e5e7eb; background: #fff; color: #374151;
+}
+.site-card .s-btn:hover { background: #f5f5f5; }
+.site-card .s-btn.danger { color: #dc2626; border-color: #fecaca; }
+.site-card .s-btn.danger:hover { background: #fee2e2; }
 .loading-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(4px);
   display: none; justify-content: center; align-items: center; z-index: 9999;
 }
 .loading-box {
-  background: white; border-radius: 20px; padding: 2rem 2.5rem;
-  text-align: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  animation: fadeIn 0.25s ease; min-width: 180px;
+  background: white; border-radius: 20px; padding: 2rem 2.5rem; text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); animation: fadeIn 0.25s ease; min-width: 180px;
 }
 .loading-spinner-full {
-  width: 40px; height: 40px; border: 4px solid #e0e0e0;
-  border-top: 4px solid #0066cc; border-radius: 50%;
-  animation: spin 0.8s linear infinite; margin: 0 auto 12px;
+  width: 40px; height: 40px; border: 4px solid #e0e0e0; border-top: 4px solid #0066cc;
+  border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px;
 }
 .loading-box p { color: #333; font-size: 1rem; font-weight: 500; margin: 0; }
 #publishOverlay {
-  display: none; position: fixed; inset: 0; z-index: 7000;
-  background: #0f172a; color: #fff;
-  font-family: system-ui, -apple-system, 'PingFang HK', 'Microsoft JhengHei', sans-serif;
+  display: none; position: fixed; inset: 0; z-index: 7000; background: #0f172a;
+  color: #fff; font-family: system-ui, -apple-system, 'PingFang HK', 'Microsoft JhengHei', sans-serif;
   overflow-y: auto;
 }
 #publishOverlay .pub-close {
-  position: absolute; top: 24px; right: 28px;
-  background: rgba(255, 255, 255, .1); border: none; color: #fff;
-  width: 44px; height: 44px; border-radius: 50%; font-size: 20px;
-  cursor: pointer; transition: background .2s;
+  position: absolute; top: 24px; right: 28px; background: rgba(255, 255, 255, .1);
+  border: none; color: #fff; width: 44px; height: 44px; border-radius: 50%;
+  font-size: 20px; cursor: pointer; transition: background .2s;
 }
 #publishOverlay .pub-close:hover { background: rgba(255, 255, 255, .2); }
 #publishOverlay .pub-inner {
-  max-width: 720px; margin: 0 auto; padding: 80px 24px 40px;
-  min-height: 100%; display: flex; flex-direction: column; box-sizing: border-box;
+  max-width: 720px; margin: 0 auto; padding: 80px 24px 40px; min-height: 100%;
+  display: flex; flex-direction: column; box-sizing: border-box;
 }
-#publishOverlay .pub-tag {
-  font-size: 15px; letter-spacing: 3px; color: #60a5fa;
-  font-weight: 600; margin-bottom: 10px;
-}
+#publishOverlay .pub-tag { font-size: 15px; letter-spacing: 3px; color: #60a5fa; font-weight: 600; margin-bottom: 10px; }
 #publishOverlay h1 { font-size: 38px; margin: 0 0 8px; font-weight: 700; }
 #publishOverlay .pub-desc { color: #94a3b8; font-size: 15px; margin: 0 0 40px; line-height: 1.6; }
 #publishOverlay label { font-size: 13px; color: #94a3b8; margin-bottom: 10px; display: block; }
@@ -343,34 +346,20 @@ body {
 #publishOverlay .suffix-box:focus-within { border-color: #1e5ef7; }
 #publishOverlay .suffix-prefix { color: #64748b; font-size: 16px; white-space: nowrap; }
 #publishOverlay #suffixInput {
-  flex: 1; background: transparent; border: none; outline: none;
-  color: #fff; font-size: 17px; padding: 18px 8px;
-  font-family: inherit; min-width: 0;
+  flex: 1; background: transparent; border: none; outline: none; color: #fff;
+  font-size: 17px; padding: 18px 8px; font-family: inherit; min-width: 0;
 }
 #publishOverlay #suffixInput::placeholder { color: #475569; }
-#urlPreviewBox {
-  margin-top: 20px; background: rgba(255, 255, 255, .04);
-  border-radius: 14px; padding: 18px 20px; display: none;
-}
+#urlPreviewBox { margin-top: 20px; background: rgba(255, 255, 255, .04); border-radius: 14px; padding: 18px 20px; display: none; }
 #urlPreviewBox .preview-label { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-#urlPreview {
-  font-size: 14px; color: #60a5fa; word-break: break-all;
-  line-height: 1.6; font-family: ui-monospace, Menlo, monospace;
-}
-#encodeNote {
-  margin-top: 12px; font-size: 12px; color: #fbbf24;
-  display: none; line-height: 1.6;
-}
-#publishMsg {
-  margin-top: 20px; font-size: 14px; display: none;
-  padding: 12px 16px; border-radius: 10px; line-height: 1.6;
-  word-break: break-all; white-space: pre-wrap;
-}
+#urlPreview { font-size: 14px; color: #60a5fa; word-break: break-all; line-height: 1.6; font-family: ui-monospace, Menlo, monospace; }
+#encodeNote { margin-top: 12px; font-size: 12px; color: #fbbf24; display: none; line-height: 1.6; }
+#publishMsg { margin-top: 20px; font-size: 14px; display: none; padding: 12px 16px; border-radius: 10px; line-height: 1.6; word-break: break-all; white-space: pre-wrap; }
 #publishOverlay .pub-bottom { margin-top: auto; padding-top: 30px; }
 #publishConfirm {
   width: 100%; padding: 18px; border: none; border-radius: 16px;
-  background: #1e5ef7; color: #fff; font-size: 17px;
-  font-weight: 600; cursor: pointer; font-family: inherit; transition: background .2s;
+  background: #1e5ef7; color: #fff; font-size: 17px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: background .2s;
 }
 #publishConfirm:hover:not(:disabled) { background: #3b7cff; }
 #publishConfirm:disabled { opacity: .6; cursor: not-allowed; }
@@ -381,10 +370,7 @@ body {
   align-items: center; justify-content: center; color: #888;
   font-family: system-ui, sans-serif; gap: 12px;
 }
-.viewer-spin {
-  width: 40px; height: 40px; border: 4px solid #ddd;
-  border-top-color: #1e5ef7; border-radius: 50%; animation: spin 0.8s linear infinite;
-}
+.viewer-spin { width: 40px; height: 40px; border: 4px solid #ddd; border-top-color: #1e5ef7; border-radius: 50%; animation: spin 0.8s linear infinite; }
 </style>
 </head>
 <body>
@@ -408,7 +394,12 @@ if (new URLSearchParams(location.search).get('id')) {
 
 <div class="main-container">
   <div class="left-panel">
-    <div class="chat-header"><div class="logo-icon">🤖</div><span class="title">AI 網頁生成器</span><span class="tag">即時預覽</span></div>
+    <div class="chat-header">
+      <div class="logo-icon">🤖</div>
+      <span class="title">AI 網頁生成器</span>
+      <span class="tag">即時預覽</span>
+      <button class="history-btn" id="historyToggleBtn" title="對話紀錄"><i class="fas fa-bars"></i></button>
+    </div>
     <div class="chat-messages" id="chatMessages">
       <div class="msg-row ai"><div class="msg-avatar">🤖</div><div class="msg-bubble">你好！我是你的網頁生成助手。請告訴我你想要什麼樣的網頁，我會幫你寫出完整的 HTML 並在右邊即時預覽。
 
@@ -421,7 +412,17 @@ if (new URLSearchParams(location.search).get('id')) {
         <button class="btn-stop" id="stopBtn">停止</button>
       </div>
     </div>
+
+    <div class="history-drawer" id="historyDrawer">
+      <div class="history-drawer-header">
+        <span class="title">對話紀錄</span>
+        <button class="close-btn" id="historyCloseBtn">✕</button>
+      </div>
+      <button class="history-new-btn" id="newChatBtn"><i class="fas fa-plus"></i> 新對話</button>
+      <div class="history-list" id="historyList"></div>
+    </div>
   </div>
+
   <div class="right-panel">
     <div class="preview-header">
       <div class="preview-dots"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span></div>
@@ -459,6 +460,7 @@ if (new URLSearchParams(location.search).get('id')) {
       <p style="font-weight:500;margin-bottom:0.3rem;" id="authDisplayName"></p>
       <p style="font-size:0.85rem;color:#6b7280;margin-bottom:1rem;" id="authDisplayEmail"></p>
       <button class="action-btn danger" id="authLogoutBtn">登出</button>
+      <button class="admin-btn-small" id="authMySitesBtn"><i class="fas fa-globe"></i> 我的網站</button>
       <button class="admin-btn-small" id="authAdminBtn"><i class="fas fa-table"></i> 用戶管理</button>
     </div>
     <div id="authPanel">
@@ -499,6 +501,14 @@ if (new URLSearchParams(location.search).get('id')) {
     <button class="modal-close" id="closeAdminModal"><i class="fas fa-times"></i></button>
     <h3><i class="fas fa-users"></i> 用戶管理</h3>
     <div id="userTableContainer"><p style="text-align:center;color:#6b7280;padding:2rem;">載入中...</p></div>
+  </div>
+</div>
+
+<div class="admin-modal-overlay" id="mySitesModal">
+  <div class="admin-modal-box">
+    <button class="modal-close" id="closeMySitesModal"><i class="fas fa-times"></i></button>
+    <h3><i class="fas fa-globe"></i> 我的網站</h3>
+    <div id="mySitesContainer"><p style="text-align:center;color:#6b7280;padding:2rem;">載入中...</p></div>
   </div>
 </div>
 
@@ -553,9 +563,10 @@ const db = firebase.database();
 const AI_KEY = 'ak_txnGh9EwAE2IWe0e7lJHKfghJbGwU';
 const AI_API = 'https://note3-prev-api.askdiandian.com/v1/chat/completions';
 const AI_MODEL = 'dots3-note-prev';
+const MAX_CONTEXT_MESSAGES = 20;
 
 // ============================================================
-// 3. 預覽框修正腳本（不擋任何按鈕）
+// 3. 預覽框注入腳本
 // ============================================================
 const IFRAME_FIX_SCRIPT = [
 '<scr'+'ipt>',
@@ -569,7 +580,6 @@ const IFRAME_FIX_SCRIPT = [
 '})();',
 '</scr'+'ipt>'
 ].join('\n');
-
 function injectFix(html) {
   if (!html) return html;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, IFRAME_FIX_SCRIPT + '</body>');
@@ -606,6 +616,7 @@ const authDisplayName = document.getElementById('authDisplayName');
 const authDisplayEmail = document.getElementById('authDisplayEmail');
 const authLogoutBtn = document.getElementById('authLogoutBtn');
 const authAdminBtn = document.getElementById('authAdminBtn');
+const authMySitesBtn = document.getElementById('authMySitesBtn');
 const loginTabBtn = document.getElementById('loginTabBtn');
 const registerTabBtn = document.getElementById('registerTabBtn');
 const loginPanel = document.getElementById('loginPanel');
@@ -624,6 +635,9 @@ const googleRegisterBtn = document.getElementById('googleRegisterBtn');
 const adminModal = document.getElementById('adminModal');
 const closeAdminModal = document.getElementById('closeAdminModal');
 const userTableContainer = document.getElementById('userTableContainer');
+const mySitesModal = document.getElementById('mySitesModal');
+const closeMySitesModal = document.getElementById('closeMySitesModal');
+const mySitesContainer = document.getElementById('mySitesContainer');
 const avatarCanvas = document.getElementById('avatarCanvas');
 const avatarCtx = avatarCanvas.getContext('2d');
 const contactModal = document.getElementById('contactModal');
@@ -644,6 +658,11 @@ const urlPreview = document.getElementById('urlPreview');
 const encodeNote = document.getElementById('encodeNote');
 const publishMsg = document.getElementById('publishMsg');
 const publishConfirm = document.getElementById('publishConfirm');
+const historyToggleBtn = document.getElementById('historyToggleBtn');
+const historyDrawer = document.getElementById('historyDrawer');
+const historyCloseBtn = document.getElementById('historyCloseBtn');
+const historyList = document.getElementById('historyList');
+const newChatBtn = document.getElementById('newChatBtn');
 
 // ============================================================
 // 6. 訪問模式
@@ -662,6 +681,7 @@ const publishConfirm = document.getElementById('publishConfirm');
   authModal.style.display = 'none';
   contactModal.style.display = 'none';
   adminModal.style.display = 'none';
+  mySitesModal.style.display = 'none';
   publishOverlay.style.display = 'none';
   document.getElementById('loadingOverlay').style.display = 'none';
   viewer.style.display = 'block';
@@ -688,6 +708,10 @@ const publishConfirm = document.getElementById('publishConfirm');
 function isAdmin(user) {
   if (!user) return false;
   return user.email === 'oscarmtr114514@gmail.com';
+}
+function getCurrentUid() {
+  if (auth.currentUser) return auth.currentUser.uid;
+  return localStorage.getItem('_localUid') || null;
 }
 
 // ============================================================
@@ -773,6 +797,7 @@ function showUI(user) {
   authDisplayName.textContent = user.displayName || '使用者';
   authDisplayEmail.textContent = user.email || '';
   authAdminBtn.style.display = isAdmin(user) ? 'block' : 'none';
+  authMySitesBtn.style.display = 'block';
   hideLoading();
 }
 function hideUI() {
@@ -801,11 +826,12 @@ async function googleLogin() {
   try {
     const result = await auth.signInWithPopup(provider);
     const u = result.user;
-    await db.ref('users/' + u.uid).set({
+    await db.ref('users/' + u.uid).update({
       name: u.displayName, email: u.email, photo: u.photoURL, lastLogin: Date.now()
     });
     showUI(u);
     closeAuthModal();
+    onUserLogin(u.uid);
   } catch (e) {
     hideLoading();
     if (e.code !== 'auth/popup-closed-by-user') {
@@ -813,7 +839,6 @@ async function googleLogin() {
     }
   }
 }
-
 async function handleRegister() {
   const name = regName.value.trim(), pw = regPassword.value, cf = regConfirmPassword.value;
   if (!name || !pw || !cf) { showMsg(registerMessage, '請填寫所有欄位', 'error'); return; }
@@ -835,9 +860,11 @@ async function handleRegister() {
     const avatar = generateIdenticon(name);
     const ref = db.ref('users').push();
     await ref.set({ name, password: pw, photo: avatar, createdAt: Date.now() });
-    const ud = { name, email: '', photo: avatar, uid: ref.key };
+    const ud = { name, email: '', photo: avatar, uid: ref.key, displayName: name };
+    localStorage.setItem('_localUid', ref.key);
     showUI(ud);
     closeAuthModal();
+    onUserLogin(ref.key);
     regName.value = ''; regPassword.value = ''; regConfirmPassword.value = '';
   } catch (e) {
     showMsg(registerMessage, '註冊失敗', 'error');
@@ -847,7 +874,6 @@ async function handleRegister() {
     registerSubmit.textContent = '註冊';
   }
 }
-
 async function handleLogin() {
   const name = loginName.value.trim(), pw = loginPassword.value;
   if (!name || !pw) { showMsg(loginMessage, '請輸入姓名和密碼', 'error'); return; }
@@ -868,10 +894,12 @@ async function handleLogin() {
       const d = c.val();
       if (d.password === pw) {
         found = true;
-        const ud = { name: d.name, email: d.email || '', photo: d.photo || '', uid: c.key };
+        const ud = { name: d.name, email: d.email || '', photo: d.photo || '', uid: c.key, displayName: d.name };
+        localStorage.setItem('_localUid', c.key);
         showUI(ud);
         closeAuthModal();
         db.ref('users/' + c.key + '/lastLogin').set(Date.now());
+        onUserLogin(c.key);
         loginName.value = ''; loginPassword.value = '';
       }
     });
@@ -885,11 +913,22 @@ async function handleLogin() {
     loginSubmit.textContent = '登入';
   }
 }
-
 function handleLogout() {
   showLoading('登出中...');
   auth.signOut().catch(() => {});
+  localStorage.removeItem('_localUid');
   hideUI();
+  currentChatId = null;
+  currentUid = null;
+  hist = [];
+  renderHistory([]);
+  resetChat();
+}
+function onUserLogin(uid) {
+  currentUid = uid;
+  loadHistoryList();
+  startNewChat(false);
+  loadPreviewFromLastSession();
 }
 
 // ============================================================
@@ -926,7 +965,208 @@ window._deleteUser = async function(key, name) {
 };
 
 // ============================================================
-// 12. 事件綁定
+// 12. 我的網站
+// ============================================================
+function openMySitesModal() {
+  mySitesModal.classList.add('show');
+  loadMySites();
+}
+function closeMySitesModalFn() { mySitesModal.classList.remove('show'); }
+async function loadMySites() {
+  mySitesContainer.innerHTML = '<p style="text-align:center;color:#6b7280;padding:2rem;">載入中...</p>';
+  const uid = getCurrentUid();
+  if (!uid) {
+    mySitesContainer.innerHTML = '<p style="text-align:center;color:#6b7280;padding:2rem;">請先登入</p>';
+    return;
+  }
+  try {
+    const snap = await db.ref('published').orderByChild('ownerUid').equalTo(uid).once('value');
+    const data = snap.val();
+    if (!data) {
+      mySitesContainer.innerHTML = '<p style="text-align:center;color:#6b7280;padding:2rem;">你還沒有發佈任何網站</p>';
+      return;
+    }
+    const list = Object.entries(data).sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
+    let html = '<div class="my-sites-list">';
+    const baseUrl = location.origin + location.pathname + '?id=';
+    for (const [key, site] of list) {
+      const d = site.createdAt ? new Date(site.createdAt).toLocaleString('zh-HK') : '-';
+      const safeKey = key.replace(/'/g, "\\'");
+      const safeTitle = (site.title || key).replace(/'/g, "\\'");
+      html += '<div class="site-card">' +
+        '<div class="s-icon">🌐</div>' +
+        '<div class="s-body">' +
+        '<div class="s-title">' + (site.title || key) + '</div>' +
+        '<div class="s-url">' + baseUrl + key + '</div>' +
+        '<div class="s-url" style="color:#9ca3af;">' + d + '</div>' +
+        '</div>' +
+        '<div class="s-actions">' +
+        '<button class="s-btn" onclick="window.open(\'' + baseUrl + safeKey + '\',\'_blank\')">訪問</button>' +
+        '<button class="s-btn danger" onclick="window._deleteSite(\'' + safeKey + '\',\'' + safeTitle + '\')">刪除</button>' +
+        '</div></div>';
+    }
+    html += '</div>';
+    mySitesContainer.innerHTML = html;
+  } catch (e) {
+    mySitesContainer.innerHTML = '<p style="text-align:center;color:#dc2626;padding:2rem;">載入失敗：' + e.message + '</p>';
+  }
+}
+window._deleteSite = async function(key, title) {
+  if (!confirm('確定要刪除網站「' + title + '」嗎？此操作無法撤銷。')) return;
+  try {
+    await db.ref('published/' + key).remove();
+    loadMySites();
+  } catch (e) { alert('刪除失敗：' + e.message); }
+};
+
+// ============================================================
+// 13. 對話紀錄
+// ============================================================
+let currentUid = null;
+let currentChatId = null;
+let hist = [];
+let historyCache = {};
+
+function resetChat() {
+  chatMessages.innerHTML = '';
+  const row = document.createElement('div');
+  row.className = 'msg-row ai';
+  row.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-bubble">你好！我是你的網頁生成助手。請告訴我你想要什麼樣的網頁，我會幫你寫出完整的 HTML 並在右邊即時預覽。</div>';
+  chatMessages.appendChild(row);
+  hist = [];
+}
+
+async function startNewChat(renderEmpty) {
+  if (!currentUid) { resetChat(); return; }
+  currentChatId = null;
+  resetChat();
+  if (renderEmpty !== false) {
+    // 立刻建立一個空的對話節點，之後第一句就寫進去
+    const ref = db.ref('users/' + currentUid + '/chats').push();
+    currentChatId = ref.key;
+    await ref.set({ title: '新對話', messages: [], createdAt: Date.now(), updatedAt: Date.now() });
+    await loadHistoryList();
+    highlightHistoryItem(currentChatId);
+  }
+}
+
+function highlightHistoryItem(chatId) {
+  document.querySelectorAll('.history-item').forEach(el => {
+    el.classList.toggle('active', el.dataset.chatId === chatId);
+  });
+}
+
+async function loadHistoryList() {
+  if (!currentUid) { renderHistory([]); return; }
+  try {
+    const snap = await db.ref('users/' + currentUid + '/chats').once('value');
+    const data = snap.val() || {};
+    const list = Object.entries(data).map(([id, c]) => ({
+      id, title: c.title || '未命名', updatedAt: c.updatedAt || c.createdAt || 0, messages: c.messages || []
+    })).sort((a, b) => b.updatedAt - a.updatedAt);
+    historyCache = {};
+    list.forEach(c => { historyCache[c.id] = c; });
+    renderHistory(list);
+  } catch (e) {
+    renderHistory([]);
+  }
+}
+
+function renderHistory(list) {
+  if (!list.length) {
+    historyList.innerHTML = '<div class="history-empty">還沒有對話紀錄<br>開始聊天就會自動儲存</div>';
+    return;
+  }
+  let html = '';
+  for (const c of list) {
+    const d = c.updatedAt ? new Date(c.updatedAt).toLocaleString('zh-HK', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+    const safeId = c.id;
+    const safeTitle = (c.title || '未命名').replace(/</g, '&lt;');
+    html += '<div class="history-item" data-chat-id="' + safeId + '" onclick="window._openChat(\'' + safeId + '\')">' +
+      '<div class="h-icon">💬</div>' +
+      '<div class="h-body"><div class="h-title">' + safeTitle + '</div><div class="h-time">' + d + '</div></div>' +
+      '<button class="h-del" onclick="event.stopPropagation();window._deleteChat(\'' + safeId + '\')"><i class="fas fa-trash"></i></button>' +
+      '</div>';
+  }
+  historyList.innerHTML = html;
+  if (currentChatId) highlightHistoryItem(currentChatId);
+}
+
+window._openChat = async function(chatId) {
+  if (!currentUid) return;
+  try {
+    const snap = await db.ref('users/' + currentUid + '/chats/' + chatId).once('value');
+    const data = snap.val();
+    if (!data) return;
+    currentChatId = chatId;
+    chatMessages.innerHTML = '';
+    const msgs = data.messages || [];
+    hist = [];
+    for (const m of msgs) {
+      if (m.role === 'user') {
+        addMessage('user', m.content);
+        hist.push({ role: 'user', content: m.content });
+      } else if (m.role === 'assistant') {
+        if (m.isCode) {
+          const bubble = addMessage('ai', '✅ 已生成網頁，請看右邊預覽');
+          bubble.classList.add('code-done');
+          if (m.html) showPreview(m.html);
+        } else {
+          addMessage('ai', m.content);
+        }
+        hist.push({ role: 'assistant', content: m.content });
+      }
+    }
+    highlightHistoryItem(chatId);
+    historyDrawer.classList.remove('show');
+  } catch (e) { alert('載入對話失敗：' + e.message); }
+};
+
+window._deleteChat = async function(chatId) {
+  if (!currentUid) return;
+  if (!confirm('確定要刪除此對話嗎？')) return;
+  try {
+    await db.ref('users/' + currentUid + '/chats/' + chatId).remove();
+    if (currentChatId === chatId) {
+      currentChatId = null;
+      resetChat();
+    }
+    await loadHistoryList();
+  } catch (e) { alert('刪除失敗：' + e.message); }
+};
+
+async function saveChat() {
+  if (!currentUid || !currentChatId) return;
+  try {
+    const firstUser = hist.find(m => m.role === 'user');
+    let title = '新對話';
+    if (firstUser) title = firstUser.content.slice(0, 20).replace(/\n/g, ' ');
+    const msgs = hist.map(m => {
+      if (m.role === 'assistant' && m.isCode) {
+        return { role: 'assistant', content: m.content, isCode: true, html: m.html || '' };
+      }
+      return { role: m.role, content: m.content };
+    });
+    await db.ref('users/' + currentUid + '/chats/' + currentChatId).update({
+      title, messages: msgs, updatedAt: Date.now()
+    });
+    await loadHistoryList();
+  } catch (e) { console.warn('saveChat failed', e); }
+}
+
+async function loadPreviewFromLastSession() {
+  if (!currentUid) return;
+  try {
+    const snap = await db.ref('users/' + currentUid + '/lastPreview').once('value');
+    const data = snap.val();
+    if (data && data.html) {
+      showPreview(data.html);
+    }
+  } catch (e) {}
+}
+
+// ============================================================
+// 14. 事件綁定
 // ============================================================
 loginTabBtn.addEventListener('click', switchToLogin);
 registerTabBtn.addEventListener('click', switchToRegister);
@@ -938,13 +1178,16 @@ authLogoutBtn.addEventListener('click', function() { handleLogout(); closeAuthMo
 authNavLink.addEventListener('click', openAuthModal);
 avatarBtn.addEventListener('click', function() {
   const user = auth.currentUser;
-  if (user) {
+  if (user || currentUid) {
     openAuthModal();
     authPanel.style.display = 'none';
     authLoggedInPanel.style.display = 'block';
-    authDisplayName.textContent = user.displayName || '使用者';
-    authDisplayEmail.textContent = user.email || '';
+    const name = user ? (user.displayName || '使用者') : (authDisplayName.textContent || '使用者');
+    const email = user ? (user.email || '') : (authDisplayEmail.textContent || '');
+    authDisplayName.textContent = name;
+    authDisplayEmail.textContent = email;
     authAdminBtn.style.display = isAdmin(user) ? 'block' : 'none';
+    authMySitesBtn.style.display = 'block';
   } else {
     openAuthModal();
   }
@@ -953,12 +1196,19 @@ authAdminBtn.addEventListener('click', function() {
   closeAuthModal();
   setTimeout(openAdminModalFn, 300);
 });
+authMySitesBtn.addEventListener('click', function() {
+  closeAuthModal();
+  setTimeout(openMySitesModal, 300);
+});
 authModal.addEventListener('click', function(e) { if (e.target === authModal) closeAuthModal(); });
 closeAdminModal.addEventListener('click', closeAdminModalFn);
 adminModal.addEventListener('click', function(e) { if (e.target === adminModal) closeAdminModalFn(); });
+closeMySitesModal.addEventListener('click', closeMySitesModalFn);
+mySitesModal.addEventListener('click', function(e) { if (e.target === mySitesModal) closeMySitesModalFn(); });
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     if (adminModal.classList.contains('show')) closeAdminModalFn();
+    if (mySitesModal.classList.contains('show')) closeMySitesModalFn();
     if (authModal.style.display === 'flex') closeAuthModal();
     if (publishOverlay.style.display === 'block') publishOverlay.style.display = 'none';
     if (contactModal.style.display === 'flex') contactModal.style.display = 'none';
@@ -971,15 +1221,23 @@ contactBtn.addEventListener('click', function(e) {
 contactModal.addEventListener('click', function(e) {
   if (e.target === contactModal) contactModal.style.display = 'none';
 });
+historyToggleBtn.addEventListener('click', function() {
+  historyDrawer.classList.toggle('show');
+  if (historyDrawer.classList.contains('show')) loadHistoryList();
+});
+historyCloseBtn.addEventListener('click', function() { historyDrawer.classList.remove('show'); });
+newChatBtn.addEventListener('click', async function() {
+  if (!currentUid) { alert('請先登入'); return; }
+  await startNewChat(true);
+  historyDrawer.classList.remove('show');
+});
 
 // ============================================================
-// 13. AI 功能
+// 15. AI 功能
 // ============================================================
-let hist = [];
 let isStreaming = false;
 let abortController = null;
 let fullContent = '';
-
 const SYSTEM_PROMPT = '你是「AI 網頁生成器」，一個專業的前端開發助手。\n\n【核心規則】\n1. 當用戶要求你「寫/生成/做/修改/新增」網頁時，你只能輸出完整的 HTML 代碼，從 <!DOCTYPE html> 到 </html>。\n2. 絕對不要在代碼前後加任何解釋、說明、標題、或 Markdown 格式。\n3. 絕對不要說「這是你的網頁」或「以下是代碼」等任何文字。\n4. 直接輸出純 HTML，讓用戶可以直接複製貼上使用。\n\n【代碼要求】\n• 完整 HTML，含 style 和 script\n• 響應式（viewport + @media）\n• 配色 3-5 色，行高 1.5-1.6\n• 語意化 HTML，可存取性\n• 不依賴外部 CDN（除了 Font Awesome 等常用庫）\n• 版權年份用 ' + new Date().getFullYear() + '\n\n【一般對話】\n如果用戶只是問問題、諮詢，沒有要求寫網頁，用自然語言回答即可，不需要輸出代碼。';
 
 function addMessage(role, text) {
@@ -1021,10 +1279,23 @@ function showPreview(html) {
   emptyState.style.display = 'none';
   previewUrl.textContent = '預覽 · 已生成';
   previewFrame.srcdoc = injectFix(html);
+  if (currentUid) {
+    db.ref('users/' + currentUid + '/lastPreview').set({ html: html, ts: Date.now() }).catch(() => {});
+  }
+}
+function buildContextMessages() {
+  const sys = { role: 'system', content: SYSTEM_PROMPT };
+  let recent = hist.slice(-MAX_CONTEXT_MESSAGES);
+  return [sys, ...recent];
 }
 async function sendMsg() {
   const text = chatInput.value.trim();
   if (!text || isStreaming) return;
+  if (currentUid && !currentChatId) {
+    const ref = db.ref('users/' + currentUid + '/chats').push();
+    currentChatId = ref.key;
+    await ref.set({ title: '新對話', messages: [], createdAt: Date.now(), updatedAt: Date.now() });
+  }
   addMessage('user', text);
   hist.push({ role: 'user', content: text });
   chatInput.value = '';
@@ -1039,7 +1310,7 @@ async function sendMsg() {
   const codeMode = isCodeRequest(text);
   try {
     abortController = new AbortController();
-    const messages = [{ role: 'system', content: SYSTEM_PROMPT }, ...hist];
+    const messages = buildContextMessages();
     const res = await fetch(AI_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + AI_KEY },
@@ -1087,13 +1358,14 @@ async function sendMsg() {
         bubble.textContent = '✅ 已生成網頁，請看右邊預覽';
         bubble.classList.add('code-done');
         showPreview(html);
-        hist.push({ role: 'assistant', content: html });
+        hist.push({ role: 'assistant', content: html, isCode: true, html: html });
       } else {
         hist.push({ role: 'assistant', content: fullContent });
       }
     } else {
       hist.push({ role: 'assistant', content: fullContent });
     }
+    await saveChat();
   } catch (e) {
     if (e.name === 'AbortError') {
       bubble.textContent = fullContent + '\n\n⏸️ 已停止';
@@ -1127,7 +1399,7 @@ chatInput.oninput = function() {
 };
 
 // ============================================================
-// 14. 發佈功能
+// 16. 發佈功能
 // ============================================================
 function getCurrentHTML() {
   const html = previewFrame.srcdoc;
@@ -1161,8 +1433,8 @@ function showPublishMsg(text, type) {
 }
 publishNavLink.addEventListener('click', function(e) {
   e.preventDefault();
-  const user = auth.currentUser;
-  if (!user) { alert('請先登入才能發佈網頁'); openAuthModal(); return; }
+  const uid = getCurrentUid();
+  if (!uid) { alert('請先登入才能發佈網頁'); openAuthModal(); return; }
   const html = getCurrentHTML();
   if (!html) { alert('請先在左邊讓 AI 生成一個網頁，再進行發佈'); return; }
   publishMsg.style.display = 'none';
@@ -1177,8 +1449,8 @@ publishConfirm.addEventListener('click', async function() {
   if (!suffix.trim()) { showPublishMsg('請填寫後綴', 'error'); return; }
   const html = getCurrentHTML();
   if (!html) { showPublishMsg('找不到要發佈的網頁，請重新生成', 'error'); return; }
-  const user = auth.currentUser;
-  if (!user) { showPublishMsg('登入狀態已失效，請重新登入', 'error'); return; }
+  const uid = getCurrentUid();
+  if (!uid) { showPublishMsg('登入狀態已失效，請重新登入', 'error'); return; }
   publishConfirm.disabled = true;
   publishConfirm.textContent = '發佈中...';
   try {
@@ -1190,10 +1462,13 @@ publishConfirm.addEventListener('click', async function() {
       publishConfirm.textContent = '確認發佈';
       return;
     }
+    const user = auth.currentUser;
+    const ownerName = user ? (user.displayName || user.email || 'unknown') : (authDisplayName.textContent || 'unknown');
     await db.ref('published/' + safeKey).set({
       html: html, title: suffix,
-      owner: user.displayName || user.email || 'unknown',
-      ownerUid: user.uid, createdAt: Date.now()
+      owner: ownerName,
+      ownerUid: uid,
+      createdAt: Date.now()
     });
     const fullUrl = buildBaseUrl() + safeKey;
     try {
@@ -1211,13 +1486,44 @@ publishConfirm.addEventListener('click', async function() {
 });
 
 // ============================================================
-// 15. 初始化
+// 17. 初始化
 // ============================================================
 auth.onAuthStateChanged(user => {
-  if (user) { showUI(user); } else { hideUI(); }
+  if (user) {
+    showUI(user);
+    if (user.uid !== currentUid) {
+      currentUid = user.uid;
+      localStorage.setItem('_localUid', user.uid);
+      loadHistoryList();
+      startNewChat(false);
+      loadPreviewFromLastSession();
+    }
+  } else {
+    if (localStorage.getItem('_localUid')) {
+      const uid = localStorage.getItem('_localUid');
+      currentUid = uid;
+      db.ref('users/' + uid).once('value').then(snap => {
+        const d = snap.val();
+        if (d) {
+          const ud = { name: d.name, email: d.email || '', photo: d.photo || '', uid: uid, displayName: d.name };
+          showUI(ud);
+          loadHistoryList();
+          startNewChat(false);
+          loadPreviewFromLastSession();
+        } else {
+          hideUI();
+          localStorage.removeItem('_localUid');
+        }
+      }).catch(() => {
+        hideUI();
+      });
+    } else {
+      hideUI();
+    }
+  }
 });
 chatInput.focus();
-console.log('AI 網頁生成器已啟動');
+console.log('AI 網頁生成器已啟動（含對話紀錄 + 我的網站）');
 </script>
 </body>
 </html>
