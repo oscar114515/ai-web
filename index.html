@@ -564,7 +564,6 @@ const AI_KEY = 'ak_txnGh9EwAE2IWe0e7lJHKfghJbGwU';
 const AI_API = 'https://note3-prev-api.askdiandian.com/v1/chat/completions';
 const AI_MODEL = 'dots3-note-prev';
 const MAX_CONTEXT_MESSAGES = 20;
-// 隱藏刷新標記（用戶看不到）
 const REFRESH_MARKER = '[[__REFRESH_SIGNAL__]]';
 
 // ============================================================
@@ -582,10 +581,40 @@ const IFRAME_FIX_SCRIPT = [
 '})();',
 '</scr'+'ipt>'
 ].join('\n');
+
+const STUDIO_BADGE_SCRIPT = [
+'<scr'+'ipt>',
+'(function(){',
+'var LOGO="https://i.postimg.cc/HxVC7TcN/IMG-8863.png";',
+'var LINK="https://oscar114515.github.io/";',
+'function addBadge(){',
+'if(document.getElementById("__studio_badge__"))return;',
+'var d=document.createElement("div");',
+'d.id="__studio_badge__";',
+'d.setAttribute("style","position:fixed!important;bottom:10px!important;left:50%!important;transform:translateX(-50%)!important;z-index:2147483647!important;background:#ffffff!important;border:1px solid #e5e7eb!important;border-radius:10px!important;box-shadow:0 4px 16px rgba(0,0,0,.15)!important;padding:6px 10px!important;display:flex!important;align-items:center!important;gap:8px!important;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,PingFang HK,Microsoft JhengHei,sans-serif!important;font-size:11px!important;color:#333!important;line-height:1.4!important;max-width:94vw!important;pointer-events:auto!important;visibility:visible!important;opacity:1!important;");',
+'d.innerHTML=\'<img src="\'+LOGO+\'" style="height:22px;width:auto;display:block;flex-shrink:0;" alt="logo"><div style="display:flex;flex-direction:column;gap:2px;min-width:0;"><span style="font-size:10px;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">此網站技術支持由梁喆同學工作室</span><button id="__studio_btn__" style="background:#1e5ef7;color:#fff;border:none;border-radius:6px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:inherit;white-space:nowrap;font-weight:500;">你也可以點擊這裏前往AI工具免費建立網站</button></div>\';',
+'document.body.appendChild(d);',
+'var btn=document.getElementById("__studio_btn__");',
+'if(btn){btn.onclick=function(){window.open(LINK,"_blank");};}',
+'}',
+'if(document.body){addBadge();}else{document.addEventListener("DOMContentLoaded",addBadge);}',
+'setTimeout(addBadge,500);',
+'setTimeout(addBadge,1500);',
+'})();',
+'</scr'+'ipt>'
+].join('\n');
+
 function injectFix(html) {
   if (!html) return html;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, IFRAME_FIX_SCRIPT + '</body>');
   return html + IFRAME_FIX_SCRIPT;
+}
+
+function injectStudioBadge(html) {
+  if (!html) return html;
+  const inject = IFRAME_FIX_SCRIPT + STUDIO_BADGE_SCRIPT;
+  if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, inject + '</body>');
+  return html + inject;
 }
 
 // ============================================================
@@ -698,7 +727,7 @@ const newChatBtn = document.getElementById('newChatBtn');
     document.title = data.title || viewerId;
     loading.style.display = 'none';
     frame.style.display = 'block';
-    frame.srcdoc = injectFix(data.html);
+    frame.srcdoc = injectStudioBadge(data.html);
   }).catch(err => {
     loading.innerHTML = '<div style="font-size:52px">❌</div><div style="font-size:17px;color:#555;margin-top:8px;">載入失敗：' + err.message + '</div>';
   });
@@ -1274,13 +1303,6 @@ function extractHTML(text) {
   if (clean.trim().startsWith('<')) return clean;
   return null;
 }
-function isCodeRequest(text) {
-  const keywords = ['寫一個','寫個','生成','做一個','做個','創建','製作','幫我寫','幫我做','幫我生成','修改','改一下','改為','改成','更新','調整','新增','添加'];
-  const lower = text.toLowerCase();
-  for (const kw of keywords) { if (lower.includes(kw)) return true; }
-  if (lower.includes('網頁') || lower.includes('頁面') || lower.includes('html')) return true;
-  return false;
-}
 function forceRefreshPreview(html) {
   emptyState.style.display = 'none';
   previewUrl.textContent = '預覽 · 已生成';
@@ -1303,6 +1325,10 @@ function buildContextMessages() {
 async function sendMsg() {
   const text = chatInput.value.trim();
   if (!text || isStreaming) return;
+  if (!getCurrentUid()) {
+    openAuthModal();
+    return;
+  }
   if (currentUid && !currentChatId) {
     const ref = db.ref('users/' + currentUid + '/chats').push();
     currentChatId = ref.key;
@@ -1352,11 +1378,9 @@ async function sendMsg() {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               fullContent += content;
-              // 顯示時隱藏標記
               const displayContent = fullContent.replace(REFRESH_MARKER, '').trim();
               bubble.textContent = displayContent;
               chatMessages.scrollTop = chatMessages.scrollHeight;
-              // 偵測刷新標記
               if (!refreshTriggered && fullContent.includes(REFRESH_MARKER)) {
                 refreshTriggered = true;
                 const html = extractHTML(fullContent);
@@ -1367,7 +1391,6 @@ async function sendMsg() {
         }
       }
     }
-    // 串流結束後清理
     bubble.classList.remove('streaming');
     const cleanText = fullContent.replace(REFRESH_MARKER, '').trim();
     const html = extractHTML(fullContent);
@@ -1538,7 +1561,7 @@ auth.onAuthStateChanged(user => {
   }
 });
 chatInput.focus();
-console.log('AI 網頁生成器已啟動（含隱藏刷新信號）');
+console.log('AI 網頁生成器已啟動');
 </script>
 </body>
 </html>
