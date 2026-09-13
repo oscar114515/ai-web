@@ -564,6 +564,8 @@ const AI_KEY = 'ak_txnGh9EwAE2IWe0e7lJHKfghJbGwU';
 const AI_API = 'https://note3-prev-api.askdiandian.com/v1/chat/completions';
 const AI_MODEL = 'dots3-note-prev';
 const MAX_CONTEXT_MESSAGES = 20;
+// 隱藏刷新標記（用戶看不到）
+const REFRESH_MARKER = '[[__REFRESH_SIGNAL__]]';
 
 // ============================================================
 // 3. 預覽框注入腳本
@@ -791,10 +793,10 @@ function showUI(user) {
   authNavLink.removeEventListener('click', openAuthModal);
   authNavLink.removeEventListener('click', handleLogout);
   authNavLink.addEventListener('click', handleLogout);
-  updateAvatar(user.photoURL, user.displayName);
+  updateAvatar(user.photoURL, user.displayName || user.name);
   authPanel.style.display = 'none';
   authLoggedInPanel.style.display = 'block';
-  authDisplayName.textContent = user.displayName || '使用者';
+  authDisplayName.textContent = user.displayName || user.name || '使用者';
   authDisplayEmail.textContent = user.email || '';
   authAdminBtn.style.display = isAdmin(user) ? 'block' : 'none';
   authMySitesBtn.style.display = 'block';
@@ -1036,12 +1038,11 @@ function resetChat() {
   hist = [];
 }
 
-async function startNewChat(renderEmpty) {
+async function startNewChat(createNode) {
   if (!currentUid) { resetChat(); return; }
   currentChatId = null;
   resetChat();
-  if (renderEmpty !== false) {
-    // 立刻建立一個空的對話節點，之後第一句就寫進去
+  if (createNode !== false) {
     const ref = db.ref('users/' + currentUid + '/chats').push();
     currentChatId = ref.key;
     await ref.set({ title: '新對話', messages: [], createdAt: Date.now(), updatedAt: Date.now() });
@@ -1238,7 +1239,7 @@ newChatBtn.addEventListener('click', async function() {
 let isStreaming = false;
 let abortController = null;
 let fullContent = '';
-const SYSTEM_PROMPT = '你是「AI 網頁生成器」，一個專業的前端開發助手。\n\n【核心規則】\n1. 當用戶要求你「寫/生成/做/修改/新增」網頁時，你只能輸出完整的 HTML 代碼，從 <!DOCTYPE html> 到 </html>。\n2. 絕對不要在代碼前後加任何解釋、說明、標題、或 Markdown 格式。\n3. 絕對不要說「這是你的網頁」或「以下是代碼」等任何文字。\n4. 直接輸出純 HTML，讓用戶可以直接複製貼上使用。\n\n【代碼要求】\n• 完整 HTML，含 style 和 script\n• 響應式（viewport + @media）\n• 配色 3-5 色，行高 1.5-1.6\n• 語意化 HTML，可存取性\n• 不依賴外部 CDN（除了 Font Awesome 等常用庫）\n• 版權年份用 ' + new Date().getFullYear() + '\n\n【一般對話】\n如果用戶只是問問題、諮詢，沒有要求寫網頁，用自然語言回答即可，不需要輸出代碼。';
+const SYSTEM_PROMPT = '你是「AI 網頁生成器」，一個專業的前端開發助手。\n\n【核心規則】\n1. 當用戶要求你「寫/生成/做/修改/新增/調整」網頁時，你必須從 `<!DOCTYPE html>` 開始，輸出完整的 HTML 到 `</html>`，不可以只給片段。\n2. 絕對不要在代碼前後加任何解釋、說明、標題、或 Markdown 格式。\n3. 絕對不要說「這是你的網頁」或「以下是代碼」等任何文字。\n4. 直接輸出純 HTML，讓用戶可以直接複製貼上使用。\n5. **每次輸出 HTML 的最後，在 `</html>` 之後，加一行 `' + REFRESH_MARKER + '`（這行是給系統的信號，用戶看不到，你務必每次都加）。**\n\n【代碼要求】\n• 完整 HTML，含 style 和 script\n• 響應式（viewport + @media）\n• 配色 3-5 色，行高 1.5-1.6\n• 語意化 HTML，可存取性\n• 不依賴外部 CDN（除了 Font Awesome 等常用庫）\n• 版權年份用 ' + new Date().getFullYear() + '\n\n【一般對話】\n如果用戶只是問問題、諮詢，沒有要求寫網頁，用自然語言回答即可，不需要輸出代碼。';
 
 function addMessage(role, text) {
   const row = document.createElement('div');
@@ -1259,13 +1260,18 @@ function addMessage(role, text) {
 }
 function extractHTML(text) {
   if (!text) return null;
-  let m = text.match(/```html\s*([\s\S]*?)\s*```/i);
+  let clean = text.replace(REFRESH_MARKER, '');
+  let m = clean.match(/```html\s*([\s\S]*?)\s*```/i);
   if (m) return m[1];
-  m = text.match(/(<!DOCTYPE\s+html\s*>\s*<html[\s\S]*?<\/html>)/i);
+  m = clean.match(/(<!DOCTYPE[\s\S]*<\/html>)/i);
   if (m) return m[1];
-  m = text.match(/(<html[\s\S]*?<\/html>)/i);
+  m = clean.match(/(<html[\s\S]*<\/html>)/i);
   if (m) return m[1];
-  if (text.trim().startsWith('<')) return text;
+  m = clean.match(/(<!DOCTYPE[\s\S]*)/i);
+  if (m) return m[1];
+  m = clean.match(/(<html[\s\S]*)/i);
+  if (m) return m[1];
+  if (clean.trim().startsWith('<')) return clean;
   return null;
 }
 function isCodeRequest(text) {
@@ -1275,10 +1281,16 @@ function isCodeRequest(text) {
   if (lower.includes('網頁') || lower.includes('頁面') || lower.includes('html')) return true;
   return false;
 }
-function showPreview(html) {
+function forceRefreshPreview(html) {
   emptyState.style.display = 'none';
   previewUrl.textContent = '預覽 · 已生成';
-  previewFrame.srcdoc = injectFix(html);
+  previewFrame.srcdoc = '';
+  setTimeout(() => {
+    previewFrame.srcdoc = injectFix(html);
+  }, 40);
+}
+function showPreview(html) {
+  forceRefreshPreview(html);
   if (currentUid) {
     db.ref('users/' + currentUid + '/lastPreview').set({ html: html, ts: Date.now() }).catch(() => {});
   }
@@ -1307,7 +1319,6 @@ async function sendMsg() {
   sendBtn.disabled = true;
   sendBtn.style.display = 'none';
   stopBtn.style.display = 'inline-block';
-  const codeMode = isCodeRequest(text);
   try {
     abortController = new AbortController();
     const messages = buildContextMessages();
@@ -1325,6 +1336,7 @@ async function sendMsg() {
     const reader = res.body.getReader();
     const decoder = new TextDecoder('utf-8');
     let buffer = '';
+    let refreshTriggered = false;
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -1340,37 +1352,40 @@ async function sendMsg() {
             const content = parsed.choices?.[0]?.delta?.content;
             if (content) {
               fullContent += content;
-              bubble.textContent = fullContent;
+              // 顯示時隱藏標記
+              const displayContent = fullContent.replace(REFRESH_MARKER, '').trim();
+              bubble.textContent = displayContent;
               chatMessages.scrollTop = chatMessages.scrollHeight;
-              if (codeMode) {
+              // 偵測刷新標記
+              if (!refreshTriggered && fullContent.includes(REFRESH_MARKER)) {
+                refreshTriggered = true;
                 const html = extractHTML(fullContent);
-                if (html) showPreview(html);
+                if (html) forceRefreshPreview(html);
               }
             }
           } catch (e) {}
         }
       }
     }
+    // 串流結束後清理
     bubble.classList.remove('streaming');
-    if (codeMode) {
-      const html = extractHTML(fullContent);
-      if (html) {
-        bubble.textContent = '✅ 已生成網頁，請看右邊預覽';
-        bubble.classList.add('code-done');
-        showPreview(html);
-        hist.push({ role: 'assistant', content: html, isCode: true, html: html });
-      } else {
-        hist.push({ role: 'assistant', content: fullContent });
-      }
+    const cleanText = fullContent.replace(REFRESH_MARKER, '').trim();
+    const html = extractHTML(fullContent);
+    if (html) {
+      bubble.textContent = '✅ 已生成網頁，請看右邊預覽';
+      bubble.classList.add('code-done');
+      forceRefreshPreview(html);
+      hist.push({ role: 'assistant', content: html, isCode: true, html: html });
     } else {
-      hist.push({ role: 'assistant', content: fullContent });
+      bubble.textContent = cleanText;
+      hist.push({ role: 'assistant', content: cleanText });
     }
     await saveChat();
   } catch (e) {
     if (e.name === 'AbortError') {
-      bubble.textContent = fullContent + '\n\n⏸️ 已停止';
+      bubble.textContent = fullContent.replace(REFRESH_MARKER, '').trim() + '\n\n⏸️ 已停止';
     } else {
-      bubble.textContent = fullContent + '\n\n❌ ' + e.message;
+      bubble.textContent = fullContent.replace(REFRESH_MARKER, '').trim() + '\n\n❌ ' + e.message;
     }
     bubble.classList.remove('streaming');
   } finally {
@@ -1523,7 +1538,7 @@ auth.onAuthStateChanged(user => {
   }
 });
 chatInput.focus();
-console.log('AI 網頁生成器已啟動（含對話紀錄 + 我的網站）');
+console.log('AI 網頁生成器已啟動（含隱藏刷新信號）');
 </script>
 </body>
 </html>
