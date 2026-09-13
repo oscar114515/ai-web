@@ -565,6 +565,8 @@ const AI_API = 'https://note3-prev-api.askdiandian.com/v1/chat/completions';
 const AI_MODEL = 'dots3-note-prev';
 const MAX_CONTEXT_MESSAGES = 20;
 const REFRESH_MARKER = '[[__REFRESH_SIGNAL__]]';
+// 全域快取：最後生成的乾淨 HTML（不含注入腳本）
+window.__LAST_GENERATED_HTML__ = null;
 
 // ============================================================
 // 3. 注入腳本
@@ -603,21 +605,18 @@ const STUDIO_BADGE_SCRIPT = [
 '</scr'+'ipt>'
 ].join('\n');
 
-// 預覽框：注入 alert/confirm 攔截（不攔截表單，讓預覽按鈕正常）
 function injectFix(html) {
   if (!html) return html;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, IFRAME_FIX_SCRIPT + '</body>');
   return html + IFRAME_FIX_SCRIPT;
 }
 
-// 訪問頁：只注入浮動方框
 function injectStudioBadge(html) {
   if (!html) return html;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, STUDIO_BADGE_SCRIPT + '</body>');
   return html + STUDIO_BADGE_SCRIPT;
 }
 
-// 用 Blob URL 載入 iframe（保證 JS 執行）
 let _previewBlobUrl = null;
 let _viewerBlobUrl = null;
 function loadIntoIframe(iframeEl, html, which) {
@@ -743,7 +742,6 @@ const newChatBtn = document.getElementById('newChatBtn');
     document.title = data.title || viewerId;
     loading.style.display = 'none';
     frame.style.display = 'block';
-    // 用 Blob URL 載入，保證 JS 執行
     loadIntoIframe(frame, injectStudioBadge(data.html), 'viewer');
   }).catch(err => {
     loading.innerHTML = '<div style="font-size:52px">❌</div><div style="font-size:17px;color:#555;margin-top:8px;">載入失敗：' + err.message + '</div>';
@@ -1321,6 +1319,8 @@ function extractHTML(text) {
   return null;
 }
 function forceRefreshPreview(html) {
+  // 關鍵：存進全域快取，讓發佈功能能讀取
+  window.__LAST_GENERATED_HTML__ = html;
   emptyState.style.display = 'none';
   previewUrl.textContent = '預覽 · 已生成';
   loadIntoIframe(previewFrame, injectFix(html), 'preview');
@@ -1454,15 +1454,11 @@ chatInput.oninput = function() {
 // 16. 發佈功能
 // ============================================================
 function getCurrentHTML() {
-  const html = previewFrame.srcdoc;
-  if (html && html.trim().length > 20) {
-    if (html.includes('<html') || html.includes('<!DOCTYPE')) {
-      let cleaned = html.replace(/<scr[\s\S]*?ipt>[\s\S]*?window\.prompt[\s\S]*?<\/scr[\s\S]*?ipt>/i, '');
-      return cleaned;
-    }
-  }
-  // Blob URL 模式下無法讀 srcdoc，改讀快取
-  return window.__LAST_GENERATED_HTML__ || null;
+  // 直接讀全域快取（Blob URL 模式下 srcdoc 永遠空）
+  const html = window.__LAST_GENERATED_HTML__;
+  if (!html || html.trim().length < 20) return null;
+  if (!html.includes('<html') && !html.includes('<!DOCTYPE')) return null;
+  return html;
 }
 function hasSpecialChars(str) { return /[^\w\-]/.test(str); }
 function buildBaseUrl() { return location.origin + location.pathname + '?id='; }
