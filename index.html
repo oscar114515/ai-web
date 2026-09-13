@@ -610,11 +610,11 @@ function injectFix(html) {
   return html + IFRAME_FIX_SCRIPT;
 }
 
+// 訪問頁只注入浮動方框，不注入 IFRAME_FIX_SCRIPT（避免攔截表單導致按鈕失效）
 function injectStudioBadge(html) {
   if (!html) return html;
-  const inject = IFRAME_FIX_SCRIPT + STUDIO_BADGE_SCRIPT;
-  if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, inject + '</body>');
-  return html + inject;
+  if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, STUDIO_BADGE_SCRIPT + '</body>');
+  return html + STUDIO_BADGE_SCRIPT;
 }
 
 // ============================================================
