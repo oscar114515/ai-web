@@ -567,7 +567,7 @@ const MAX_CONTEXT_MESSAGES = 20;
 const REFRESH_MARKER = '[[__REFRESH_SIGNAL__]]';
 
 // ============================================================
-// 3. 預覽框注入腳本
+// 3. 注入腳本
 // ============================================================
 const IFRAME_FIX_SCRIPT = [
 '<scr'+'ipt>',
@@ -577,7 +577,6 @@ const IFRAME_FIX_SCRIPT = [
 'window.confirm=function(m){return new Promise(function(r){var d=bm("<div style=\\"background:#fff;border-radius:14px;padding:24px 28px;max-width:340px;box-shadow:0 20px 50px rgba(0,0,0,.2);text-align:center;\\"><div style=\\"font-size:15px;color:#222;line-height:1.6;margin-bottom:18px;white-space:pre-wrap;\\">"+String(m).replace(/</g,"&lt;")+"</div><div style=\\"display:flex;gap:10px;justify-content:center;\\"><button id=\\"__c\\" style=\\"background:#f0f0f0;color:#333;border:none;padding:8px 22px;border-radius:8px;cursor:pointer;font-size:14px;\\">取消</button><button id=\\"__k\\" style=\\"background:#1e5ef7;color:#fff;border:none;padding:8px 22px;border-radius:8px;cursor:pointer;font-size:14px;\\">確定</button></div></div>");d.querySelector("#__k").onclick=function(){d.remove();r(true);};d.querySelector("#__c").onclick=function(){d.remove();r(false);};});};',
 'window.prompt=function(m,df){return new Promise(function(r){var d=bm("<div style=\\"background:#fff;border-radius:14px;padding:24px 28px;max-width:340px;box-shadow:0 20px 50px rgba(0,0,0,.2);\\"><div style=\\"font-size:15px;color:#222;line-height:1.6;margin-bottom:14px;white-space:pre-wrap;\\">"+String(m).replace(/</g,"&lt;")+"</div><input id=\\"__i\\" style=\\"width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;box-sizing:border-box;\\" value=\\""+(df?String(df).replace(/"/g,"&quot;"):"")+"\\"><div style=\\"display:flex;gap:10px;justify-content:flex-end;margin-top:16px;\\"><button id=\\"__c\\" style=\\"background:#f0f0f0;color:#333;border:none;padding:8px 22px;border-radius:8px;cursor:pointer;font-size:14px;\\">取消</button><button id=\\"__k\\" style=\\"background:#1e5ef7;color:#fff;border:none;padding:8px 22px;border-radius:8px;cursor:pointer;font-size:14px;\\">確定</button></div></div>");var i=d.querySelector("#__i");i.focus();d.querySelector("#__k").onclick=function(){var v=i.value;d.remove();r(v);};d.querySelector("#__c").onclick=function(){d.remove();r(null);};i.onkeydown=function(e){if(e.key==="Enter"){var v=i.value;d.remove();r(v);}};});};',
 'var _o=window.open;window.open=function(u){if(u){var d=bm("<div style=\\"background:#fff;border-radius:14px;width:90%;height:80%;max-width:900px;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.2);overflow:hidden;\\"><div style=\\"padding:10px 14px;background:#f5f5f5;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#333;\\"><span>🔗 "+String(u).replace(/</g,"&lt;")+"</span><button id=\\"__x\\" style=\\"background:#e0e0e0;border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;\\">✕</button></div><iframe src=\\""+u+"\\" style=\\"flex:1;border:none;width:100%;\\"></iframe></div>");d.querySelector("#__x").onclick=function(){d.remove();};return d;}return _o.apply(window,arguments);};',
-'document.addEventListener("submit",function(e){e.preventDefault();},true);',
 '})();',
 '</scr'+'ipt>'
 ].join('\n');
@@ -604,17 +603,34 @@ const STUDIO_BADGE_SCRIPT = [
 '</scr'+'ipt>'
 ].join('\n');
 
+// 預覽框：注入 alert/confirm 攔截（不攔截表單，讓預覽按鈕正常）
 function injectFix(html) {
   if (!html) return html;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, IFRAME_FIX_SCRIPT + '</body>');
   return html + IFRAME_FIX_SCRIPT;
 }
 
-// 訪問頁只注入浮動方框，不注入 IFRAME_FIX_SCRIPT（避免攔截表單導致按鈕失效）
+// 訪問頁：只注入浮動方框
 function injectStudioBadge(html) {
   if (!html) return html;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, STUDIO_BADGE_SCRIPT + '</body>');
   return html + STUDIO_BADGE_SCRIPT;
+}
+
+// 用 Blob URL 載入 iframe（保證 JS 執行）
+let _previewBlobUrl = null;
+let _viewerBlobUrl = null;
+function loadIntoIframe(iframeEl, html, which) {
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  if (which === 'preview') {
+    if (_previewBlobUrl) URL.revokeObjectURL(_previewBlobUrl);
+    _previewBlobUrl = url;
+  } else {
+    if (_viewerBlobUrl) URL.revokeObjectURL(_viewerBlobUrl);
+    _viewerBlobUrl = url;
+  }
+  iframeEl.src = url;
 }
 
 // ============================================================
@@ -727,7 +743,8 @@ const newChatBtn = document.getElementById('newChatBtn');
     document.title = data.title || viewerId;
     loading.style.display = 'none';
     frame.style.display = 'block';
-    frame.srcdoc = injectStudioBadge(data.html);
+    // 用 Blob URL 載入，保證 JS 執行
+    loadIntoIframe(frame, injectStudioBadge(data.html), 'viewer');
   }).catch(err => {
     loading.innerHTML = '<div style="font-size:52px">❌</div><div style="font-size:17px;color:#555;margin-top:8px;">載入失敗：' + err.message + '</div>';
   });
@@ -1306,10 +1323,7 @@ function extractHTML(text) {
 function forceRefreshPreview(html) {
   emptyState.style.display = 'none';
   previewUrl.textContent = '預覽 · 已生成';
-  previewFrame.srcdoc = '';
-  setTimeout(() => {
-    previewFrame.srcdoc = injectFix(html);
-  }, 40);
+  loadIntoIframe(previewFrame, injectFix(html), 'preview');
 }
 function showPreview(html) {
   forceRefreshPreview(html);
@@ -1441,10 +1455,14 @@ chatInput.oninput = function() {
 // ============================================================
 function getCurrentHTML() {
   const html = previewFrame.srcdoc;
-  if (!html || html.trim().length < 20) return null;
-  if (!html.includes('<html') && !html.includes('<!DOCTYPE')) return null;
-  let cleaned = html.replace(/<scr[\s\S]*?ipt>[\s\S]*?window\.prompt[\s\S]*?<\/scr[\s\S]*?ipt>/i, '');
-  return cleaned;
+  if (html && html.trim().length > 20) {
+    if (html.includes('<html') || html.includes('<!DOCTYPE')) {
+      let cleaned = html.replace(/<scr[\s\S]*?ipt>[\s\S]*?window\.prompt[\s\S]*?<\/scr[\s\S]*?ipt>/i, '');
+      return cleaned;
+    }
+  }
+  // Blob URL 模式下無法讀 srcdoc，改讀快取
+  return window.__LAST_GENERATED_HTML__ || null;
 }
 function hasSpecialChars(str) { return /[^\w\-]/.test(str); }
 function buildBaseUrl() { return location.origin + location.pathname + '?id='; }
